@@ -20,7 +20,7 @@ GNU General Public License for more details.
 #define OB_MOLECULEFORMAT_H
 
 #include <ciso646>  // detect std::lib
-#include <unordered_map>
+  #include <unordered_map>
 
 #include <openbabel/babelconfig.h>
 #include <openbabel/obconversion.h>

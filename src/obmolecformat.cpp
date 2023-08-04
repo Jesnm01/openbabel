@@ -18,7 +18,7 @@ GNU General Public License for more details.
 #include <openbabel/babelconfig.h>
 #include <openbabel/obmolecformat.h>
 #include <openbabel/mol.h>
-#include <openbabel/reaction.h>
+  #include <openbabel/reaction.h>
 
 #include <algorithm>
 #include <iterator> // Required for MSVC2015 use of std::back_inserter

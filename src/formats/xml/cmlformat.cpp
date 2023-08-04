@@ -28,7 +28,7 @@ GNU General Public License for more details.
 #include <openbabel/obfunctions.h>
 #include <openbabel/xml.h>
 #include <cfloat>
-#include <openbabel/reaction.h>
+  #include <openbabel/reaction.h>
 
 
 #ifdef WIN32

@@ -261,31 +261,31 @@ namespace OpenBabel
     {
       OBConversion::RegisterFormat("CONFIG",this);
     }
-
+    
     const char* Description() override  // required
     {
       return "DL-POLY CONFIG\n";
     }
-
+    
     const char* SpecificationURL() override
-    {
+    { 
       return "http://www.cse.scitech.ac.uk/ccg/software/DL_POLY";
     }
-
+    
     //Flags() can return be any the following combined by | or be omitted if none apply
     // NOTREADABLE  READONEONLY  NOTWRITABLE  WRITEONEONLY
     unsigned int Flags() override
     {
       return WRITEONEONLY;
     }
-
+    
     ////////////////////////////////////////////////////
     /// The "API" interface functions
     bool ReadMolecule(OBBase* pOb, OBConversion* pConv) override;
     bool WriteMolecule(OBBase* pOb, OBConversion* pConv) override;
-
+    
   };
-
+  
   //Make an instance of the format class
   DlpolyConfigFormat theDlpolyConfigFormat;
   
@@ -393,24 +393,24 @@ public:
   {
     OBConversion::RegisterFormat("HISTORY",this);
   }
-
+  
   const char* Description() override  // required
   {
     return "DL-POLY HISTORY\n";
   }
-
+  
   const char* SpecificationURL() override
-  {
+  { 
     return "http://www.cse.scitech.ac.uk/ccg/software/DL_POLY";
   }
-
+  
   //Flags() can return be any the following combined by | or be omitted if none apply
   // NOTREADABLE  READONEONLY  NOTWRITABLE  WRITEONEONLY
   unsigned int Flags() override
   {
     return NOTWRITABLE;
   }
-
+  
   ////////////////////////////////////////////////////
   /// The "API" interface functions
   bool ReadMolecule(OBBase* pOb, OBConversion* pConv) override;

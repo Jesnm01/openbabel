@@ -594,7 +594,7 @@ if (DO_PHP_BINDINGS)
     install(FILES ${openbabel_SOURCE_DIR}/scripts/php/openbabel.php
             DESTINATION "${PHP_INSTDIR}"
 	    COMPONENT bindings_php)
-    install(FILES ${openbabel_SOURCE_DIR}/scripts/php/baphpel.php
+	install(FILES ${openbabel_SOURCE_DIR}/scripts/php/baphpel.php
             DESTINATION "${PHP_INSTDIR}"
 	    COMPONENT bindings_php)
 

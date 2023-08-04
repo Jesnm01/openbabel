@@ -316,7 +316,7 @@ namespace OpenBabel
       delete candidate;
     }else{
       m_transforms.push_back (candidate);
-    }
+  }
   }
 
   /*!
