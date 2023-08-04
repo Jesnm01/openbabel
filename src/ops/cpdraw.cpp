@@ -67,15 +67,15 @@ namespace OpenBabel
         if (!pmol)
             return false;
 
-        //Sacamos el SMILES Canonico e identificamos los bloques (no se modifica nada internamente, es solamente para identificar bloques)
+        //Execute canonical algorithm and identify the blocks (nothing is modified internally, it is only to identify blocks for later cp detection)
         CanonizeOgm(pmol, pConv);
         //cout << "CanSmiles: " << pmol->GetCanSmiles() << "\n";
         
 
 
-        /* ------------------- Algoritmo de deteccion de Cp ----------------------- */
+        /* ------------------- Cp detection algorithm ----------------------- */
         vector<int> test(pmol->NumBonds(),0);
-        vector<pair<int,int>> cpBonds(pmol->NumBonds(), std::make_pair(-1,-1)); //Por defecto lo ponemos a -1. con esto comprobamos tb que si el valor es -1, no es un cpbond
+        vector<pair<int,int>> cpBonds(pmol->NumBonds(), std::make_pair(-1,-1)); //By default we set it to -1. with this we also check that if the value is -1, it is not a cpbond
         OBAtom* begin;
         OBAtom* end;
         int contador = 0;
@@ -97,7 +97,7 @@ namespace OpenBabel
         }
         
 
-        //Si ha detectado aunque sea 1 posible cpBond seguimos con el algoritmo. Si no, acabamos.
+        //If it has detected even 1 possible Cp bond, we continue with the algorithm. If not, we're done.
         if (foundOne) {
 
             std::vector<std::vector<pair<int, int>>> individualCpBonds;
@@ -226,7 +226,7 @@ namespace OpenBabel
                     if (atomVisited.at(carbonIdx) == 0) {
                         /*Esto deberia hacer que devolviera una lista de obbrings, por si el carbono está en varios anillos distintos, y luego comprobar todos los anillos.
                         Simplemente viendo si todos los carbonos del _path están en el Cp, seria valido. Si el Cp tiene menos, el Cp está mal detectado y no se insertará en la molecula. Lo mismo si tiene más.
-                        Esto no funciona del todo para todas las moleculas. Mol3 da problemas*/
+                        Esto no funciona del todo para todas las moleculas.*/
                         if (FindRingWithCarbon(rlist, carbonIdx, ringCarbon)) {
                             rpath = ringCarbon->_path;
 
@@ -271,7 +271,7 @@ namespace OpenBabel
                     atomMetal = pmol->GetAtom(cp->GetMetalIdx());
 
 
-                    /* ------------------ Proceso de creacion del pentagono en perspectiva ---------------------*/
+                    /* ------------------ Process of creating the poligon in perspective ---------------------*/
                     /* 1. Creo el dummy y lo coloco en la posicion que toque segun el numero de Cps que haya detectado (el primero tiene que ir arriba)
                     *  2. El radio, cojo uno estandar y que me lo haga siempre del mismo tamaño mejor. Para el cp_centroid en la formula de mover los carbonos, usaria la posicion del dummy
                     *  3. Pongo los carbonos en pentagono regular, y luego en perspectiva
@@ -354,7 +354,7 @@ namespace OpenBabel
                 }
             }
 
-             /*------ Quitar los bonds M - C / C - M -----*/
+             /*------ Remove "M - C / C - M" bonds type-----*/
             OBBond* bondToDelete;
             OBAtom* metal, * carbono;
 

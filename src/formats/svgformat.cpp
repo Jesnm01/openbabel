@@ -408,7 +408,7 @@ bool SVGFormat::WriteSVG(OBConversion* pConv, vector<OBBase*>& molecules)
         return false;
       }
 
-      //New: Cp detection and generation plugin function
+      //New: Cp detection plugin function
       vector<vector<int> > fragList;
       pmol->ContigFragList(fragList);
       if (pmol->HasOgmMetal() || fragList.size() == 0) {

@@ -432,7 +432,7 @@ namespace OpenBabel
       for (atom = d->mol->BeginAtom(i); atom; atom = d->mol->NextAtom(i))
           atom->SetVector(atom->GetX() * f, - atom->GetY() * f, atom->GetZ());
 
-      //New: se aplica tambien el escalado a cada uno de los circulos cp
+      //New: the scaling is also applied to each of the Cp circles
       std::vector<CpComplex*> cps;
       cps = d->mol->GetCps();
       if (!cps.empty()) {
@@ -475,7 +475,7 @@ namespace OpenBabel
           atom->SetVector(atom->GetX() - min_x + margin, atom->GetY() - min_y + margin, atom->GetZ());
       
 
-      //New: se aplican escalados a los circulos de los Cp
+      //New: scales are applied to the circles of the Cp
       for (std::vector<CpComplex*>::iterator it = cps.begin(); it != cps.end(); ++it) {
           CpComplex* cp = *it;
           for (int i = 0; i < cp->GetCirclePathSize(); i++) {
@@ -501,16 +501,10 @@ namespace OpenBabel
     // Identify and remember the ring bonds according to the SSSR
     // - note that OBBond->IsInRing() includes bonds not included in the SSSR as the SSSR excludes very large rings
     std::vector<OBRing*> rings(mol->GetSSSR()); 
-    //New: cout del '_path' generado en los ciclos, ya que ese sera el orden de dibujado de bonds de ciclos
-    //cout << "Ring paths in the molecule: \n"; //Debug
     OBBitVec ringBonds;
     for (std::vector<OBRing*>::iterator k = rings.begin(); k != rings.end(); ++k) {
       OBRing *ring = *k;
       std::vector<int> indexes = ring->_path;
-      /*for (unsigned int l = 0; l < indexes.size(); ++l) { //Debug
-          if (l < indexes.size() - 1) cout << indexes[l] << "-";
-          else cout << indexes[l] << "\n";
-      }*/
       for (unsigned int l = 0; l < indexes.size(); ++l) {
         OBAtom *begin = d->mol->GetAtom(indexes[l]);
         OBAtom *end;

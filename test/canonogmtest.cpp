@@ -15,10 +15,6 @@ using namespace OpenBabel;
 
 #ifdef TESTDATADIR
     string ogmtestdatadir = TESTDATADIR;
-    //string complete_dataset_file = ogmtestdatadir + "ogm/complete_dataset.smi"; //"C:/TFG/dataset/complete_dataset.smi";
-    //string dataset_file =         ogmtestdatadir + "ogm/dataset_to_test_small.smi"; //"C:/TFG/dataset/output/test/files/dataset_to_test_small.smi";
-
-    //string dataset_file = ogmtestdatadir + "ogm/prueba.smi";
 
     string dataset_file =           ogmtestdatadir + "ogm/dataset_to_test.smi";
     string canon_file =             ogmtestdatadir + "ogm/canon_output.smi";
@@ -30,11 +26,18 @@ using namespace OpenBabel;
 
 
 
-//Test unitario para comprobar la seleccion del primer metal
+/*TO DO:
+    - Currently the results of the tests are sent by cout, but since it is a lot of text, it would be convenient to create a '.txt' file to dump the results.
+    At the moment this is done via command line with (for example): " test_runner canonogmtest 3 > 'path' "
+
+    - Another option is remove all couts (since they are essentially to give extra information) and leave only if the test is valid or not.
+*/
+
+//Unit test to check the selection of the first metal
 int SelectCanonMetal() {
     cout << endl << "# Testing Metal Selection in Canonical Algorithm...  \n";
 
-    //Abrimos el fichero con los smiles a testear
+    //Open the file with the smiles to be tested
     std::ifstream mifs;
     if (!SafeOpen(mifs, metal_selection_file.c_str()))
     {
@@ -54,9 +57,9 @@ int SelectCanonMetal() {
     std::string delimiter = "?";
     while (mifs.good())
     {
-        if (std::getline(mifs, buffer)) { //Sacamos la linea entera y luego la parseamos
+        if (std::getline(mifs, buffer)) { //Extract the whole line and then parse it
 
-            if ((buffer[0] == '#' && buffer[1] == '#') || buffer.empty()) //Es una linea de comentarios o linea vacia (probablemente al final del fichero)
+            if ((buffer[0] == '#' && buffer[1] == '#') || buffer.empty()) //It is a comment line or empty line (probably at the end of the file).
                 continue;
             else {
                 //Parse string to get smiles and metal_idx
@@ -87,8 +90,7 @@ int SelectCanonMetal() {
                 continue;
             }
 
-            //Ahora ya hacemos el test de seleccion para esta molecula parseada
-            //...
+            //Now we do the selection test for this parsed molecule
             bool goodTest = false;
             OBConversion conv;
             conv.SetInFormat("smi");
@@ -112,7 +114,7 @@ int SelectCanonMetal() {
             OB_REQUIRE(goodTest);
 
 
-            //Limpiamos las variables
+            //Clear variables for next molecule
             idx.clear();
             buffer.clear();
             smiles.clear();
@@ -131,12 +133,12 @@ int SelectCanonMetal() {
 }
 
 
-//Test funcional para comprobar la robustez del canonizado
+//Functional test to check the robustness of the canonicalization (standard labels)
 int RandomCanonStandardLabels() {
     cout << endl << "# Testing Canon Persistance when using random SMILES with Standard Labels algorithm...\n";
 
 
-    //Convertimos los SMILES originales a random SMILES usando la opcion -C anticanonical
+    //Convert the original SMILES to random SMILES using the -C anticanonical option
     OBConversion convAntiC;
     convAntiC.SetInAndOutFormats("smi", "smi");
     convAntiC.AddOption("C"); //Anticanonical smiles
@@ -148,7 +150,7 @@ int RandomCanonStandardLabels() {
     OB_REQUIRE((count > 0));
 
 
-    //Convertimos los random SMILES en canonicos
+    //Convert the random SMILES into canonical (using standard labels)
     OBConversion convCanon;
     convCanon.SetInAndOutFormats("smi", "smi");
     vector<string> FileList2, OutputFileList2;
@@ -158,7 +160,7 @@ int RandomCanonStandardLabels() {
     count = convCanon.FullConvert(FileList2, OutputFileName2, OutputFileList2);
     OB_REQUIRE((count > 0));
 
-    //Convertimos los original SMILES en canonicos
+    //Convert the original SMILES into canonical (using standard labels)
     OBConversion convCanon2;
     convCanon2.SetInAndOutFormats("smi", "smi");
     vector<string> FileList3, OutputFileList3;
@@ -191,7 +193,7 @@ int RandomCanonStandardLabels() {
     }
 
 
-    //Leemos ambos ficheros y comparamos los resultados
+    //Read several files and compare the results
     unsigned int currentTest = 0;
     std::string canon, random_canon, random, original;
     while (mifs.good() && mifs2.good() && mifs3.good())
@@ -221,12 +223,12 @@ int RandomCanonStandardLabels() {
     return 0;
 }
 
-//Test funcional para comprobar la robustez del canonizado
+//Functional test to verify the robustness of the canonicalization (canonical labels)
 int RandomCanonCanonicalLabels() {
     cout << endl << "# Testing Canon Persistance when using random SMILES with Canonical Labels algorithm...\n";
 
 
-    //Convertimos los SMILES originales a random SMILES usando la opcion -C anticanonical
+    //Convert the original SMILES to random SMILES using the -C anticanonical option
     OBConversion convAntiC;
     convAntiC.SetInAndOutFormats("smi", "smi");
     convAntiC.AddOption("C"); //Anticanonical smiles
@@ -238,10 +240,10 @@ int RandomCanonCanonicalLabels() {
     OB_REQUIRE((count > 0));
 
 
-    //Convertimos los random SMILES en canonicos
+    //Convert the random SMILES into canonical
     OBConversion convCanon;
     convCanon.SetInAndOutFormats("smi", "smi");
-    convCanon.AddOption("c");
+    convCanon.AddOption("c"); //Canonical option
     vector<string> FileList2, OutputFileList2;
     string OutputFileName2;
     FileList2.push_back(random_file);
@@ -249,7 +251,7 @@ int RandomCanonCanonicalLabels() {
     count = convCanon.FullConvert(FileList2, OutputFileName2, OutputFileList2);
     OB_REQUIRE((count > 0));
 
-    //Convertimos los original SMILES en canonicos
+    //Convert the original SMILES into canonical
     OBConversion convCanon2;
     convCanon2.SetInAndOutFormats("smi", "smi");
     convCanon2.AddOption("c");
@@ -283,7 +285,7 @@ int RandomCanonCanonicalLabels() {
     }
 
 
-    //Leemos ambos ficheros y comparamos los resultados
+    //Read several files and compare the results
     unsigned int currentTest = 0;
     std::string canon, random_canon, random, original;
     while (mifs.good() && mifs2.good() && mifs3.good())
@@ -313,12 +315,12 @@ int RandomCanonCanonicalLabels() {
     return 0;
 }
 
-//Test funcional para comprobar la robustez del canonizado
+//Functional test to verify the robustness of the canonicalization when applied several times
 int CanonOverCanon() {
     cout << endl << "# Testing Canon Persistance when using a previously canonized SMILES (i.e. aplying 2 times the algorithm)...\n";
 
 
-    //Convertimos los SMILES de entrada en canonicos
+    //Convert the input SMILES into canonicals
     int count = 0;
     OBConversion convCanon;
     convCanon.SetInAndOutFormats("smi", "smi");
@@ -330,7 +332,7 @@ int CanonOverCanon() {
     count = convCanon.FullConvert(FileList, OutputFileName, OutputFileList);
     OB_REQUIRE((count > 0));
 
-    //Convertimos los SMILES resultado de la conversion anterior de nuevo en canonicos
+    //Convert the SMILES resulting from the previous conversion again into canonical
     OBConversion convCanon2;
     convCanon2.SetInAndOutFormats("smi", "smi");
     convCanon2.AddOption("c");
@@ -359,7 +361,7 @@ int CanonOverCanon() {
     }
 
 
-    //Leemos ambos ficheros y comparamos los resultados
+    //Read several files and compare the results
     unsigned int currentTest = 0;
     std::string canon, canon_over_canon, original;
     while (mifs.good() && mifs2.good() && mifs3.good())
@@ -385,6 +387,7 @@ int CanonOverCanon() {
     return 0;
 }
 
+//Functional test to verify correct depiction of Cp structures 
 int DrawDoubleCpTest() {
     cout << endl << "# Testing Detection and Drawing Double Cp in SVG Depiction...  \n";
 

@@ -418,7 +418,6 @@ protected:
       std::vector<std::string> SupportedOutputFormat; ///< list of supported output format
 
       public:
-        //New
         bool externOptionc;
 
     };

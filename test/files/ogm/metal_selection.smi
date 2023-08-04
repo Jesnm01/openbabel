@@ -1,5 +1,5 @@
-## Formato del fichero: <smiles> " " <idx del metal que debería escoger como raiz> " " <otro metal valido en caso de ser una molecula simetrica>
-## Para comentar, se deberá usar una linea que comience por '##'
+## File format: <smiles> "?" <idx of the metal that should be chosen as root> "?" <another valid metal in case of symmetric molecule>
+## Comment lines must start with '##'
 [Au+]([CH3-])[P](C=1C=CC=CC1)(C=2C=CC=CC2)C=3C=CC=CC3 ?1?
 [Br-][Pd+2]([Br-])([P](C=1C=CC=CC1)(C=2C=CC=CC2)C=3C=CC=CC3)[P](C=4C=CC=CC4)(C=5C=CC=CC5)C=6C=CC=CC6 ?2?
 [Cl-][Pd+2]123([Cl-])[CH]=4CC[CH]3=[CH]2CC[CH]41 ?2?
